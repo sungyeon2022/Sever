@@ -1,0 +1,7 @@
+package send_receive_Data;
+
+import miniprojectServer.Server;
+
+public class send_receive_Data extends Server {
+
+}

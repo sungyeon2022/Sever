@@ -1,0 +1,10 @@
+package send_receive_String;
+
+import lombok.Data;
+import miniprojectServer.Server;
+
+@Data
+
+public class send_receive_String {
+	
+}

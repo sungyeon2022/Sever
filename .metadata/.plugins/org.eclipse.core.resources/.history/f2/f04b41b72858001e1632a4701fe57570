@@ -1,0 +1,5 @@
+package send_receive_String;
+
+public class send_receive_StringControl extends send_receive_String {
+
+}

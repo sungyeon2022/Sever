@@ -1,0 +1,9 @@
+package miniprojectServer;
+
+import lombok.Data;
+
+@Data
+
+public class Server {
+	
+}

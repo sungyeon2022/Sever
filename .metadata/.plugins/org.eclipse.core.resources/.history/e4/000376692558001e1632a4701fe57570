@@ -1,0 +1,16 @@
+package miniprojectServer;
+
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import lombok.Data;
+
+@Data
+
+public class Server {
+	private List<ObjectOutputStream> dataSendList = Collections.synchronizedList(new ArrayList<ObjectOutputStream>());
+	private ServerSocket serverSocket;
+}
