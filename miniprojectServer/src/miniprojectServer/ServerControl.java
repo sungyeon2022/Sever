@@ -6,9 +6,12 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-
+import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class ServerControl extends Server {
@@ -51,6 +54,7 @@ public class ServerControl extends Server {
 	public void ReceiveThread(Socket socket) {
 		new Thread(new Runnable() {
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public void run() {
 				OutputStream outputStream = null;
@@ -60,16 +64,18 @@ public class ServerControl extends Server {
 				Object sendObject = null;
 				Object name = null;
 				try {
-					inputStream = socket.getInputStream();
 					outputStream = socket.getOutputStream();
+					inputStream = socket.getInputStream();
 					
+					
+					player_Out_Data = new ObjectOutputStream(outputStream);
 					player_In_Data = new ObjectInputStream(inputStream);
 					System.out.println("실행중");
-					player_Out_Data = new ObjectOutputStream(outputStream);
+					
 					
 					getDataSendList().add(player_Out_Data);
 					
-					name = player_In_Data.readObject();
+					name = ((HashMap<String, Object>)player_In_Data.readObject()).get("Client name");
 					System.out.println(name+"님이 들어왔습니다.");
 				} catch (IOException | ClassNotFoundException e) {
 					System.out.println("데이터 가져오기 실패");
@@ -81,13 +87,14 @@ public class ServerControl extends Server {
 					while (true) {
 						System.out.println("전송중");
 						sendObject = player_In_Data.readObject();
-//						sendData(player_In_Data, player_Out_Data);
+						System.out.println(sendObject);
 					}
 				} catch (IOException | ClassNotFoundException e) {
 					e.printStackTrace();
 				} finally {
 					try {
 						System.out.println(name + "연결 종료");
+						getDataSendList().remove(player_Out_Data);
 						socket.close();
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -99,11 +106,11 @@ public class ServerControl extends Server {
 	}
 
 	@Override
-	public void sendData(ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) {
+	public void sendData(Object sendObject, ObjectOutputStream objectOutputStream) {
 		for (ObjectOutputStream send : getDataSendList()) {
 			if (!send.equals(objectOutputStream)) {
 				try {
-					send.writeObject(objectInputStream);
+					send.writeObject(sendObject);
 					send.flush();
 				} catch (IOException e) {
 					e.printStackTrace();

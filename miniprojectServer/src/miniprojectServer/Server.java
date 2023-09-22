@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import lombok.Data;
 
@@ -24,6 +25,6 @@ public class Server {
 	}
 	public void start() {}
 	public void ReceiveThread(Socket socket) {}
-	public void sendData(ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) {}
+	public void sendData(Object object, ObjectOutputStream objectOutputStream) {}
 	
 }
