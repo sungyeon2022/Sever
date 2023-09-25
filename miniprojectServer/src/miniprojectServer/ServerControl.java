@@ -85,9 +85,9 @@ public class ServerControl extends Server {
 				try {
 					
 					while (true) {
-						System.out.println("전송중");
 						sendObject = player_In_Data.readObject();
-						System.out.println(sendObject);
+						System.out.println(Arrays.toString((int[])((HashMap<String, Object>)sendObject).get("PlayerXY")));
+						sendData(sendObject, player_Out_Data);
 					}
 				} catch (IOException | ClassNotFoundException e) {
 				} finally {
@@ -110,7 +110,7 @@ public class ServerControl extends Server {
 			if (!send.equals(objectOutputStream)) {
 				try {
 					send.writeObject(sendObject);
-					send.flush();
+					send.reset();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
