@@ -90,7 +90,6 @@ public class ServerControl extends Server {
 						System.out.println(sendObject);
 					}
 				} catch (IOException | ClassNotFoundException e) {
-					e.printStackTrace();
 				} finally {
 					try {
 						System.out.println(name + "연결 종료");
