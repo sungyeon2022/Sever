@@ -16,9 +16,9 @@ public class TimerControl extends Timer {
 				setCurrentTime((int) System.currentTimeMillis()/10);
 				setTimeData(getCurrentTime() - getStartTime());
 				setMmsec(getTimeData() % 100);
-				setSec((getTimeData()/100)%60);
+				setSec((getTimeData()/100));
 				setMin(getSec()/60%60);
-				setTimerString(getMin()+":"+getSec()+"."+getMmsec());
+				setTimerString(getSec()+"."+getMmsec());
 			}
 		}).start();
 	}

@@ -11,9 +11,12 @@ import java.util.HashMap;
 
 import Timer.TimerControl;
 
+
+
 public class ServerControl extends Server {
 	private TimerControl timerControl = new TimerControl();
 	public ServerControl() {
+		multiCheckThread();
 		start();
 	}
 	
@@ -58,35 +61,21 @@ public class ServerControl extends Server {
 				InputStream inputStream = null;
 				ObjectInputStream player_In_Data = null;
 				ObjectOutputStream player_Out_Data = null;
-				Object sendObject = new HashMap<String, Object>();
+				Object sendObject = null;
 				Object name = null;
 				try {
 					outputStream = socket.getOutputStream();
 					inputStream = socket.getInputStream();
-
 					player_Out_Data = new ObjectOutputStream(outputStream);
 					player_In_Data = new ObjectInputStream(inputStream);
 					System.out.println("실행중");
-
 					getDataSendList().add(player_Out_Data);
 					name = ((HashMap<String, Object>) player_In_Data.readObject()).get("Client name");
 					System.out.println(name + "님이 들어왔습니다.");
-					if(getDataSendList().size()==2) {
-						for(int i = 1;i<=3;i++) {
-							timerControl.setTimerString(Integer.toString(4-i));
-							try {
-								Thread.sleep(1000);
-							} catch (Exception e) {
-								// TODO: handle exception
-							}
-						}
-						timerControl.checkPassedTimeThread();
-					}
 				} catch (IOException | ClassNotFoundException e) {
 					System.out.println("데이터 가져오기 실패");
 					e.printStackTrace();
 				}
-
 				try {
 					while (true) {
 						sendObject = player_In_Data.readObject();
@@ -103,16 +92,14 @@ public class ServerControl extends Server {
 						System.out.println("클라이언트 강제 종료");
 					}
 				}
-
 			}
 		}).start();
 	}
-
 	@Override
 	public void sendData(Object sendObject, ObjectOutputStream objectOutputStream) {
-		((HashMap<String, Object>)sendObject).put("Timer", timerControl.getTimerString());
 		for (ObjectOutputStream send : getDataSendList()) {
 			if (!send.equals(objectOutputStream)) {
+				((HashMap<String, Object>)sendObject).put("Timer", timerControl.getTimerString());
 				try {
 					send.writeObject(sendObject);
 					send.reset();
@@ -122,5 +109,21 @@ public class ServerControl extends Server {
 
 			}
 		}
+	}
+	public void multiCheckThread() {
+		new Thread(()->{
+			while (!(getDataSendList().size()==2));
+			if(getDataSendList().size()==2) {
+				for(int i = 1;i<=3;i++) {
+					timerControl.setTimerString(Integer.toString(4-i));
+					try {
+						Thread.sleep(1000);
+					} catch (Exception e) {
+					}
+				}
+				timerControl.checkPassedTimeThread();
+			}
+			
+		}).start();
 	}
 }
