@@ -97,9 +97,9 @@ public class ServerControl extends Server {
 	}
 	@Override
 	public void sendData(Object sendObject, ObjectOutputStream objectOutputStream) {
+		((HashMap<String, Object>)sendObject).put("Timer", timerControl.getTimerString());
 		for (ObjectOutputStream send : getDataSendList()) {
 			if (!send.equals(objectOutputStream)) {
-				((HashMap<String, Object>)sendObject).put("Timer", timerControl.getTimerString());
 				try {
 					send.writeObject(sendObject);
 					send.reset();
@@ -114,8 +114,8 @@ public class ServerControl extends Server {
 		new Thread(()->{
 			while (!(getDataSendList().size()==2));
 			if(getDataSendList().size()==2) {
-				for(int i = 1;i<=3;i++) {
-					timerControl.setTimerString(Integer.toString(4-i));
+				for(int i = 0;i<=9;i++) {
+					timerControl.setTimerString(Integer.toString(10-i));
 					try {
 						Thread.sleep(1000);
 					} catch (Exception e) {

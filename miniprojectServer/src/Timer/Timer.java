@@ -11,8 +11,9 @@ public class Timer{
 	private int currentTime;
 	private int timeData;
 	private int mmsec;
-	private int sec;
-	private int min;
+	private String sec;
+	private String min;
+	private String hour;
 	private String timerString;
 	JLabel timerLabel;
 	public Timer() {
