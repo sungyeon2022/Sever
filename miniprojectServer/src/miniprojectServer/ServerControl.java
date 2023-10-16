@@ -98,6 +98,7 @@ public class ServerControl extends Server {
 	@Override
 	public void sendData(Object sendObject, ObjectOutputStream objectOutputStream) {
 		((HashMap<String, Object>)sendObject).put("Timer", timerControl.getTimerString());
+		((HashMap<String, Object>)sendObject).put("isStart", timerControl.isStart());
 		for (ObjectOutputStream send : getDataSendList()) {
 			if (!send.equals(objectOutputStream)) {
 				try {
