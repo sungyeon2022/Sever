@@ -17,9 +17,11 @@ public class Timer{
 	private String timerString;
 	JLabel timerLabel;
 	private boolean isStart;
+	private boolean isReady;
 	public Timer() {
-		this.timerString = "SOLO";
+		this.timerString = "Singel";
 		this.isStart = false;
+		this.isReady = false;
 	}
 
 	public void checkPassedTimeThread() {};

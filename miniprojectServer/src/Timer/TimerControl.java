@@ -20,7 +20,16 @@ public class TimerControl extends Timer {
 				setMin(String.format("%02d", getTimeData()/6000%60));
 				setHour(String.format("%02d", getTimeData()/360000%60));
 				setTimerString(getHour()+":"+getMin()+":"+getSec()+":"+getMmsec());
-				if(getTimeData()>6000&&!isStart()) {
+				if(getTimeData()>1000&&!isStart()) {
+					setReady(true);
+					for(int i = 3; i>=1;i--) {
+						setTimerString(Integer.toString(i));
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
 					setStart(true);
 					setStartTime((int) System.currentTimeMillis()/10);
 				}
