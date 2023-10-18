@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.util.HashMap;
 
 import Timer.TimerControl;
+import data.DataClass;
 
 
 
@@ -61,8 +62,8 @@ public class ServerControl extends Server {
 				InputStream inputStream = null;
 				ObjectInputStream player_In_Data = null;
 				ObjectOutputStream player_Out_Data = null;
-				SendDataClass sendDataClass = null;
-				Object sendObject = null;
+				DataClass sendDataClass = null;
+				Object reciveObject;
 				Object name = null;
 				try {
 					outputStream = socket.getOutputStream();
@@ -71,17 +72,18 @@ public class ServerControl extends Server {
 					player_In_Data = new ObjectInputStream(inputStream);
 					System.out.println("실행중");
 					getDataSendList().add(player_Out_Data);
-//					name = ((SendDataClass)player_In_Data.readObject()).getClientName();
-					name = ((HashMap<String, Object>) player_In_Data.readObject()).get("Client name");
+					sendDataClass = (DataClass) player_In_Data.readObject();
+					name = sendDataClass.getClientName();	
+					System.out.println(name + "연결 성공");
 				} catch (IOException | ClassNotFoundException e) {
 					System.out.println("데이터 가져오기 실패");
 					e.printStackTrace();
 				}
 				try {
 					while (true) {
-						sendObject = player_In_Data.readObject();
-						sendData(sendObject, player_Out_Data);
-						System.out.println((HashMap<String, Object>) sendObject);
+						sendDataClass = (DataClass) player_In_Data.readObject();
+						sendData(sendDataClass, player_Out_Data);
+						System.out.println(sendDataClass.toString());
 					}
 				} catch (IOException | ClassNotFoundException e) {
 				} finally {
@@ -97,14 +99,14 @@ public class ServerControl extends Server {
 		}).start();
 	}
 	@Override
-	public void sendData(Object sendObject, ObjectOutputStream objectOutputStream) {
-		((HashMap<String, Object>)sendObject).put("Timer", timerControl.getTimerString());
-		((HashMap<String, Object>)sendObject).put("isStart", timerControl.isStart());
-		((HashMap<String, Object>)sendObject).put("isReady", timerControl.isReady());
+	public void sendData(DataClass sendDataClass, ObjectOutputStream objectOutputStream) {
+		sendDataClass.setTimer(timerControl.getTimerString());
+		sendDataClass.setStart(timerControl.isStart());
+		sendDataClass.setReady(timerControl.isReady());
 		for (ObjectOutputStream send : getDataSendList()) {
 			if (!send.equals(objectOutputStream)) {
 				try {
-					send.writeObject(sendObject);
+					send.writeObject(sendDataClass);
 					send.reset();
 				} catch (IOException e) {
 					System.out.println("전송 종료");

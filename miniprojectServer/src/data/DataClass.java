@@ -1,4 +1,4 @@
-package miniprojectServer;
+package data;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -6,7 +6,7 @@ import java.util.Arrays;
 import lombok.Data;
 
 @Data
-public class SendDataClass implements Serializable {
+public class DataClass implements Serializable {
 	private static final long serialVersionUID = 1L;
 	/* 사용자 정보 */
 	private String clientName;
@@ -25,7 +25,7 @@ public class SendDataClass implements Serializable {
 	private boolean isStart;
 	private boolean isReady;
 	
-	public SendDataClass() {}
+	public DataClass() {}
 	
 	@Override
 	public String toString() {
@@ -35,7 +35,7 @@ public class SendDataClass implements Serializable {
 		+ isAttack + ", isInvincible : " + isInvincible + ", Timer : " + Timer + ", isStart : " + isStart
 		+ ", isReady : " + isReady;
 	}
-	public void recivePlayerData(SendDataClass sendDataClass) {
+	public void recivePlayerData(DataClass sendDataClass) {
 		this.clientName = sendDataClass.clientName;
 		this.xPlayer = sendDataClass.xPlayer;
 		this.yPlayer = sendDataClass.yPlayer;
@@ -47,7 +47,7 @@ public class SendDataClass implements Serializable {
 		this.isAttack = sendDataClass.isAttack;
 		this.isInvincible = sendDataClass.isInvincible;
 	}
-	public void reciveSystemData(SendDataClass sendDataClass) {
+	public void reciveSystemData(DataClass sendDataClass) {
 		this.Timer = sendDataClass.Timer;
 		this.isStart = sendDataClass.isStart;
 		this.isReady = sendDataClass.isReady;

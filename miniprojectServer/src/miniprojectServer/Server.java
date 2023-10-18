@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import data.DataClass;
 import lombok.Data;
 
 @Data
@@ -23,6 +24,6 @@ public class Server {
 	}
 	public void start() {}
 	public void ReceiveThread(Socket socket) {}
-	public void sendData(Object object, ObjectOutputStream objectOutputStream) {}
+	public void sendData(DataClass sendDataClass, ObjectOutputStream objectOutputStream) {}
 	
 }
