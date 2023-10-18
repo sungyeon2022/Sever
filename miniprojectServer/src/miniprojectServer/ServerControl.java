@@ -61,6 +61,7 @@ public class ServerControl extends Server {
 				InputStream inputStream = null;
 				ObjectInputStream player_In_Data = null;
 				ObjectOutputStream player_Out_Data = null;
+				SendDataClass sendDataClass = null;
 				Object sendObject = null;
 				Object name = null;
 				try {
@@ -70,8 +71,8 @@ public class ServerControl extends Server {
 					player_In_Data = new ObjectInputStream(inputStream);
 					System.out.println("실행중");
 					getDataSendList().add(player_Out_Data);
+//					name = ((SendDataClass)player_In_Data.readObject()).getClientName();
 					name = ((HashMap<String, Object>) player_In_Data.readObject()).get("Client name");
-					System.out.println(name + "님이 들어왔습니다.");
 				} catch (IOException | ClassNotFoundException e) {
 					System.out.println("데이터 가져오기 실패");
 					e.printStackTrace();

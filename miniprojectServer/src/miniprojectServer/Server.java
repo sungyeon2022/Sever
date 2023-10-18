@@ -17,10 +17,8 @@ public class Server {
 	private List<ObjectOutputStream> dataSendList;
 	private int socket;
 	private ServerSocket serverSocket;
-	private boolean isString;
 	public Server() {
 		this.socket = 8050;
-		this.isString = false;
 		this.dataSendList = Collections.synchronizedList(new ArrayList<ObjectOutputStream>());
 	}
 	public void start() {}
