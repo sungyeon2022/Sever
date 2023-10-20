@@ -27,14 +27,14 @@ public class DataClass implements Serializable {
 	
 	public DataClass() {}
 	
-	@Override
-	public String toString() {
-		return "clientName : " + clientName + ", xPlayer : " + xPlayer + ", yPlayer : " + yPlayer 
-		+ ", moveSpeed : " + moveSpeed + ", attackDamage : " + attackDamage + ", life : " + life
-		+ ", intView : " + intView + ", booleanView : " + Arrays.toString(booleanView) + ", isAttack : "
-		+ isAttack + ", isInvincible : " + isInvincible + ", Timer : " + Timer + ", isStart : " + isStart
-		+ ", isReady : " + isReady;
-	}
+//	@Override
+//	public String toString() {
+//		return "clientName : " + clientName + ", xPlayer : " + xPlayer + ", yPlayer : " + yPlayer 
+//		+ ", moveSpeed : " + moveSpeed + ", attackDamage : " + attackDamage + ", life : " + life
+//		+ ", intView : " + intView + ", booleanView : " + Arrays.toString(booleanView) + ", isAttack : "
+//		+ isAttack + ", isInvincible : " + isInvincible + ", Timer : " + Timer + ", isStart : " + isStart
+//		+ ", isReady : " + isReady;
+//	}
 	public void recivePlayerData(DataClass sendDataClass) {
 		this.clientName = sendDataClass.clientName;
 		this.xPlayer = sendDataClass.xPlayer;
