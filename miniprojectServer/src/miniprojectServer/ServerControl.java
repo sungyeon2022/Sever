@@ -9,15 +9,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
-import Timer.TimerControl;
 import data.DataClass;
 
 
 
 public class ServerControl extends Server {
-	private TimerControl timerControl = new TimerControl();
 	public ServerControl() {
-		multiCheckThread();
 		start();
 	}
 	
@@ -34,7 +31,6 @@ public class ServerControl extends Server {
 				System.out.println("유저 대기중");
 				socket = getServerSocket().accept();
 				ReceiveThread(socket);
-
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -62,9 +58,9 @@ public class ServerControl extends Server {
 				InputStream inputStream = null;
 				ObjectInputStream player_In_Data = null;
 				ObjectOutputStream player_Out_Data = null;
-				DataClass sendDataClass = null;
-				Object reciveObject;
+				DataClass reciveDataClass = null;
 				Object name = null;
+				boolean isMulti = false;
 				try {
 					outputStream = socket.getOutputStream();
 					inputStream = socket.getInputStream();
@@ -72,8 +68,8 @@ public class ServerControl extends Server {
 					player_In_Data = new ObjectInputStream(inputStream);
 					System.out.println("실행중");
 					getDataSendList().add(player_Out_Data);
-					sendDataClass = (DataClass) player_In_Data.readObject();
-					name = sendDataClass.getClientName();	
+					reciveDataClass = (DataClass) player_In_Data.readObject();
+					name = reciveDataClass.getClientName();
 					System.out.println(name + "연결 성공");
 				} catch (IOException | ClassNotFoundException e) {
 					System.out.println("데이터 가져오기 실패");
@@ -81,9 +77,13 @@ public class ServerControl extends Server {
 				}
 				try {
 					while (true) {
-						sendDataClass = (DataClass) player_In_Data.readObject();
-						sendData(sendDataClass, player_Out_Data);
-						System.out.println(sendDataClass.toString());
+						reciveDataClass = (DataClass) player_In_Data.readObject();
+						if(getDataSendList().size()==2 && !isMulti) {
+							isMulti = true;
+							reciveDataClass.setStartTime((int)System.currentTimeMillis()/10);
+						}
+						sendData(reciveDataClass, player_Out_Data);
+						System.out.println(reciveDataClass.toString());
 					}
 				} catch (IOException | ClassNotFoundException e) {
 				} finally {
@@ -100,9 +100,7 @@ public class ServerControl extends Server {
 	}
 	@Override
 	public void sendData(DataClass sendDataClass, ObjectOutputStream objectOutputStream) {
-		sendDataClass.setTimer(timerControl.getTimerString());
-		sendDataClass.setStart(timerControl.isStart());
-		sendDataClass.setReady(timerControl.isReady());
+		
 		for (ObjectOutputStream send : getDataSendList()) {
 			if (!send.equals(objectOutputStream)) {
 				try {
@@ -114,23 +112,5 @@ public class ServerControl extends Server {
 
 			}
 		}
-	}
-	public void multiCheckThread() {
-		new Thread(()->{
-			while (!(getDataSendList().size()==2));
-			if(getDataSendList().size()==2) {
-				timerControl.setReady(true);
-				for(int i = 0;i<=9;i++) {
-					timerControl.setTimerString(Integer.toString(10-i));
-					try {
-						Thread.sleep(1000);
-					} catch (Exception e) {
-					}
-				}
-				timerControl.setReady(false);
-				timerControl.checkPassedTimeThread();
-			}
-			
-		}).start();
 	}
 }
