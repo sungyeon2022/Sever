@@ -55,7 +55,7 @@ public class ServerControl extends Server {
 				ObjectInputStream player_In_Data = null;
 				ObjectOutputStream player_Out_Data = null;
 				DataClass reciveDataClass = null;
-				Object name = null;
+				String name = null;
 				try {
 					outputStream = socket.getOutputStream();
 					inputStream = socket.getInputStream();
@@ -93,6 +93,9 @@ public class ServerControl extends Server {
 	public void sendData(DataClass sendDataClass, ObjectOutputStream objectOutputStream) {
 
 		for (ObjectOutputStream send : getDataSendList()) {
+			if(getDataSendList().size()==2&&sendDataClass.isStart()) {
+				
+			}
 			if (!send.equals(objectOutputStream)) {
 				try {
 					send.writeObject(sendDataClass);

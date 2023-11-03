@@ -18,14 +18,12 @@ import lombok.Data;
 
 public class Server {
 	private List<ObjectOutputStream> dataSendList;
-	private List<DataClass> sendDataClasses;
 	private int socket;
 	private ServerSocket serverSocket;
 	private int startTime;
 	public Server() {
 		this.socket = 8050;
 		this.dataSendList = Collections.synchronizedList(new ArrayList<ObjectOutputStream>());
-		this.sendDataClasses = Collections.synchronizedList(new ArrayList<DataClass>());
 	}
 	public void start() {}
 	public void ReceiveThread(Socket socket) {}
