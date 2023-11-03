@@ -11,13 +11,11 @@ import java.util.HashMap;
 
 import data.DataClass;
 
-
-
 public class ServerControl extends Server {
 	public ServerControl() {
 		start();
 	}
-	
+
 	public static void main(String[] args) {
 		ServerControl serverControl = new ServerControl();
 	}
@@ -50,8 +48,6 @@ public class ServerControl extends Server {
 	@Override
 	public void ReceiveThread(Socket socket) {
 		new Thread(new Runnable() {
-
-			@SuppressWarnings("unchecked")
 			@Override
 			public void run() {
 				OutputStream outputStream = null;
@@ -60,7 +56,6 @@ public class ServerControl extends Server {
 				ObjectOutputStream player_Out_Data = null;
 				DataClass reciveDataClass = null;
 				Object name = null;
-				boolean isMulti = false;
 				try {
 					outputStream = socket.getOutputStream();
 					inputStream = socket.getInputStream();
@@ -78,12 +73,7 @@ public class ServerControl extends Server {
 				try {
 					while (true) {
 						reciveDataClass = (DataClass) player_In_Data.readObject();
-						if(getDataSendList().size()==2 && !isMulti) {
-							isMulti = true;
-							reciveDataClass.setStartTime((int)System.currentTimeMillis()/10);
-						}
 						sendData(reciveDataClass, player_Out_Data);
-						System.out.println(reciveDataClass.toString());
 					}
 				} catch (IOException | ClassNotFoundException e) {
 				} finally {
@@ -98,15 +88,17 @@ public class ServerControl extends Server {
 			}
 		}).start();
 	}
+
 	@Override
 	public void sendData(DataClass sendDataClass, ObjectOutputStream objectOutputStream) {
-		
+
 		for (ObjectOutputStream send : getDataSendList()) {
 			if (!send.equals(objectOutputStream)) {
 				try {
 					send.writeObject(sendDataClass);
 					send.reset();
-				} catch (IOException e) {
+
+				} catch (Exception e) {
 					System.out.println("전송 종료");
 				}
 
